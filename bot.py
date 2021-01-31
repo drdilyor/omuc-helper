@@ -59,19 +59,14 @@ def create(upd, ctx):
     title, _, content = text.partition('\n')
     if title and content:
         msgs.append(Message(title, content))
+        json.dump([i.to_dict() for i in msgs], open('data.json', 'w'), indent=4)
         upd.message.reply_text("success")
     else:
         upd.message.reply_text("fail, example:\n/create\ntitle\ncontent...")
 
 
-def save(upd, ctx):
-    json.dump([i.to_dict() for i in msgs], open('data.json', 'w'), indent=4)
-    upd.message.reply_text("okay")
-
-
 d.add_handler(x.CommandHandler('start', start))
 d.add_handler(x.CommandHandler('create', create))
-d.add_handler(x.CommandHandler('save', save))
 d.add_handler(x.InlineQueryHandler(inline))
 
 u.start_polling()
