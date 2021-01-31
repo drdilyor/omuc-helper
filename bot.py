@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import json
+import sys
 import time
 from uuid import uuid4
 
@@ -52,10 +53,27 @@ def inline(upd, ctx):
 
     upd.inline_query.answer(result)
 
+
+def create(upd, ctx):
+    text = upd.message.text
+    _command, _, text = text.partition('\n')
+    title, _, content = text.partition('\n')
+    if title and content:
+        msgs.append(Message(title, content))
+        upd.message.reply_text("success")
+    else:
+        upd.message.reply_text("fail, example:\n/create\ntitle\ncontent...")
+
+
+def save(upd, ctx):
+    json.dump([i.to_dict() for i in msgs], open('data.json', 'w'), indent=4)
+    upd.message.reply_text("okay")
+
+
 d.add_handler(x.CommandHandler('start', start))
+d.add_handler(x.CommandHandler('create', create))
+d.add_handler(x.CommandHandler('save', save))
 d.add_handler(x.InlineQueryHandler(inline))
-try:
-    u.start_polling()
-    u.idle()
-finally:
-    json.dump([i.to_dict() for i in msgs], 'data.json')
+
+u.start_polling()
+u.idle()
