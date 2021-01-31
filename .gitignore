@@ -1,0 +1,4 @@
+venv/
+*.py[oc]
+**/__pycache__
+secrets.py
