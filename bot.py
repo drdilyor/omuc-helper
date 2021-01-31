@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import json
+import os
 import sys
 import time
 from uuid import uuid4
@@ -7,10 +8,8 @@ from uuid import uuid4
 import telegram as t
 from telegram import ext as x
 
-from secrets import TOKEN
 
-
-u = x.Updater(TOKEN)
+u = x.Updater(os.environ['BOT_TOKEN'])
 d = u.dispatcher
 
 def start(upd, ctx):
